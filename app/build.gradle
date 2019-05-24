@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.project.capstone_design.billcode"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation  'com.android.support:design:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'android.arch.work:work-runtime:1.0.1'
+
+    // TextImplementation
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    // zxing for QR Procedure
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    // facebook login
+    implementation 'com.facebook.android:facebook-login:4.42.0'
+
+    // google fcm
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+
+    // retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    // gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+    // retrofit2 - gson converter
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    // Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // 카카오 로그인 sdk를 사용하기 위해 필요.
+    implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+
+    // 카카오링크 sdk를 사용하기 위해 필요.
+    //implementation group: 'com.kakao.sdk', name: 'kakaolink', version: project.KAKAO_SDK_VERSION
+
+    // 카카오톡 sdk를 사용하기 위해 필요.
+    implementation group: 'com.kakao.sdk', name: 'kakaotalk', version: project.KAKAO_SDK_VERSION
+
+    // 카카오내비 sdk를 사용하기 위해 필요.
+    //implementation group: 'com.kakao.sdk', name: 'kakaonavi', version: project.KAKAO_SDK_VERSION
+
+    // 카카오스토리 sdk를 사용하기 위해 필요.
+    //implementation group: 'com.kakao.sdk', name: 'kakaostory', version: project.KAKAO_SDK_VERSION
+
+    // push sdk를 사용하기 위해 필요.
+    implementation group: 'com.kakao.sdk', name: 'push', version: project.KAKAO_SDK_VERSION
+}
+apply plugin: 'com.google.gms.google-services'
