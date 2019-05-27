@@ -1,15 +1,11 @@
 package com.project.capstone_design.billcode.addItem;
 
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,8 +13,6 @@ import com.project.capstone_design.billcode.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by charlie on 2017. 4. 24..
@@ -50,16 +44,17 @@ public class AddItem_RecyclerAdapter extends RecyclerView.Adapter<AddItem_Recycl
         final boolean mPushChecked;
         Log.i("IMPORTANT", ">>>>>>>>>> 홀더에 포지션   :  " + position);
         Log.i("IMPORTANT", ">>>>>>>>>> 피곤하다 IMAGE값   :  " + mItems.get(position).getImage());
-        Picasso.get().load("http://35.174.4.10:4500/images/" + mItems.get(position).getImage() + ".jpg").fit().into(viewHolder.mProductImageView); // 이미지 50 50으로 자름, centerCrop()등 가능
-        Log.i("IMPORTANT", ">>>>>>>>>> 피곤하다 NAME값   :  " + mItems.get(position).getName());
-        viewHolder.mProductNameView.setText(mItems.get(position).getName());
+        Picasso.get().load("http://10.80.72.173:4500/images/" + mItems.get(position).getImage() + ".jpg").fit().into(viewHolder.mProductImageView); // 이미지 50 50으로 자름, centerCrop()등 가능
+        // Picasso.get().load("http://35.174.4.10:4500/images/" + mItems.get(position).getImage() + ".jpg").fit().into(viewHolder.mProductImageView); // 이미지 50 50으로 자름, centerCrop()등 가능
+        Log.i("IMPORTANT", ">>>>>>>>>> 피곤하다 NAME값   :  " + mItems.get(position).getProduct_code());
+        viewHolder.mProductNameView.setText(mItems.get(position).getProduct_name());
 
         mExpDate = mItems.get(position).getExpDate();
         disExpDate = "20" + mExpDate.substring(0, 2) + "년" + mExpDate.substring(2, 4) + "월" + mExpDate.substring(4, 6) + "일";
         Log.i("IMPORTANT", ">>>>>>>>>> 피곤하다 DATE값   :  " + mExpDate);
         viewHolder.mProductExpDateView.setText(disExpDate);
 
-        if(mItems.get(position).isPushChecked()) {
+        if(mItems.get(position).getPushChecked() == 1) {
             viewHolder.mPushCheckedTextView.setVisibility(View.VISIBLE);
             viewHolder.mPushUnCheckedTextView.setVisibility(View.GONE);
         }
@@ -70,7 +65,7 @@ public class AddItem_RecyclerAdapter extends RecyclerView.Adapter<AddItem_Recycl
         viewHolder.mPushCheckedTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItems.get(position).setPushChecked(false);
+                mItems.get(position).setPushChecked(0);
                 viewHolder.mPushCheckedTextView.setVisibility(View.GONE);
                 viewHolder.mPushUnCheckedTextView.setVisibility(View.VISIBLE);
             }
@@ -79,7 +74,7 @@ public class AddItem_RecyclerAdapter extends RecyclerView.Adapter<AddItem_Recycl
         viewHolder.mPushUnCheckedTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItems.get(position).setPushChecked(true);
+                mItems.get(position).setPushChecked(1);
                 viewHolder.mPushCheckedTextView.setVisibility(View.VISIBLE);
                 viewHolder.mPushUnCheckedTextView.setVisibility(View.GONE);
             }

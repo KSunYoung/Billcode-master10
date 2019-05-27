@@ -1,32 +1,53 @@
 package com.project.capstone_design.billcode.network;
 
+
 import com.google.gson.JsonObject;
 import com.project.capstone_design.billcode.model.ExpirationData;
+import com.project.capstone_design.billcode.model.ProductCode;
 import com.project.capstone_design.billcode.model.UserData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-public interface  NetworkInterface {
+public interface NetworkInterface {
 
     @GET("user")
     Call<ArrayList<JsonObject>> getAllUserData();
 
+    @GET("login/{user_id}")
+    Call<JsonObject> IDCheck(@Path("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("login")
+    Call<JsonObject> UserCheck(@Field("user_id") String user_id,
+                               @Field("user_pw") String user_pw);
+
     @GET("user/{id}")
     Call<JsonObject> getUser(@Path("id") String id);
 
-    @GET("product/{productCode}")
-    // Call<ArrayList<JsonObject>> getProductByCode(@Field("productCode") String productCode);
-     Call<JsonObject> getProductByCode(@Path("productCode") String productCode);
+
+    @GET("getProductName/{product_code}")
+    //Call<ArrayList<JsonObject>> GetProductNameByCode(@Body String productCodes);
+    Call<JsonObject> GetProductNameOne(@Path("product_code") String product_code);
+    //Call<ArrayList<JsonObject>> GetProductNameByCode(@Body JsonArray productCodes);
     // Call<ArrayList<JsonObject>> getProductByCode(@Path("productCode") String productCode);
     // Call<ProductResponse> getProductByCode(@Path("productCode") String productCode);
 
+    @POST("getProductName")
+    Call<JsonObject> GetProductNameMany(@Body ArrayList<ProductCode> mProductCode);
+
+    @GET("getUserItemList/{user_id}")
+    Call<JsonObject> GetUserItemList(@Path("user_id") String user_id);
+
+    @GET("getUserItemList/byExpDateUp/{user_id}")
+    Call<JsonObject> GetUserItemListByExpDateUp(@Path("user_id") String user_id);
 
 
     //@FormUrlEncoded

@@ -13,17 +13,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.project.capstone_design.billcode.R;
 import com.project.capstone_design.billcode.ScanActivity;
 import com.project.capstone_design.billcode.model.ExpirationData;
+import com.project.capstone_design.billcode.model.ProductCode;
 import com.project.capstone_design.billcode.network.NetworkController;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,8 +33,6 @@ import retrofit2.internal.EverythingIsNonNull;
 
 
 public class AddItemActivity extends AppCompatActivity {
-
-
 
     /* QR code scanner 객체 */
     private IntentIntegrator scan;
@@ -45,7 +44,7 @@ public class AddItemActivity extends AppCompatActivity {
     private boolean isTotalPushChecked;
 
     ////////////// 리싸이클러 뷰 //////////////////
-    //private static final int LAYOUT = R.layout.activity_itemlist;
+    //private static final int LAYOUT = R.layout.activity_additem;
     private RecyclerView.Adapter adapter;
     private RecyclerView mRecyclerView;
     private ArrayList<AddItem_RecyclerItem> mItems = new ArrayList<>();
@@ -59,13 +58,13 @@ public class AddItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_itemlist);
+        setContentView(R.layout.activity_additem);
         Button btnCancel = findViewById(R.id.ItemCancel);
         Button btnConfirm = findViewById(R.id.ItemConfirm);
-        mRecyclerView = findViewById(R.id.ItemList_RecyclerViewItemList);
+        mRecyclerView = findViewById(R.id.AddItem_RecyclerViewAddItem);
         adapter = new AddItem_RecyclerAdapter(mItems); // 어답터에 아이템 연결
 
-        mExpirationData = new ArrayList<ExpirationData>();
+        mExpirationData = new ArrayList<>();
         SharedPreferences mAppData = getSharedPreferences("AppData", MODE_PRIVATE);
 
         isPushChecked = mAppData.getBoolean("IS_PUSH_CHECKED", false);
@@ -77,6 +76,7 @@ public class AddItemActivity extends AppCompatActivity {
         scan.setOrientationLocked(true);
         scan.initiateScan();
         scan.setPrompt("여기보세요");
+
 
 
         // 내부 DB 초기화
@@ -114,15 +114,14 @@ public class AddItemActivity extends AppCompatActivity {
                 // Intent nextIntent = new Intent(this,Itemlist);
                 //sqliteDB.insert()
                 mExpirationData.clear();
-                Toast.makeText(getApplicationContext(), "성공적으로 전달되었습니다.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "성공적으로 전달되었습니다.", Toast.LENGTH_SHORT).show();
                 for(int i=0;i< mItems.size();i++){
                     ExpirationData miniExpirationData = new ExpirationData(
-                            "mike123",mItems.get(i).getName(),mItems.get(i).getExpDate());
+                            "mike123",mItems.get(i).getProduct_code(),mItems.get(i).getExpDate(),mItems.get(i).getPushChecked());
                     //Log.i(TAG, ">>> mItems 개체" + i + "번째 이름: " + mItems.get(i).getName());
                     mExpirationData.add(miniExpirationData);
                 }
                 ExpDateUpload();
-
 
             }
         });
@@ -171,6 +170,12 @@ public class AddItemActivity extends AppCompatActivity {
                 setData(arrayCode, arrayExpDate); // data처리에서 array를 사용하고자 위치변경(원래 setReCyclerView 맨 하단에 위치)
 
                 //adapter.notifyDataSetChanged();
+
+                //for (int i = 0; i < array.length; i++){
+                //    GetProductNameOne(arrayCode[i]);
+                //}
+                GetProductNameMany(arrayCode);
+
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -258,12 +263,18 @@ public class AddItemActivity extends AppCompatActivity {
             this.onRestart();
         }
 
+
+
 // RecyclerView 에 들어갈 데이터를 추가합니다.
         for (int i = 0; i < listName.length; i++) {
             mItems.add(new AddItem_RecyclerItem(listName[i], listExpDate[i], listName[i]));
             if(isPushChecked && isTotalPushChecked)
-                mItems.get(i).setPushChecked(true);
+                mItems.get(i).setPushChecked(1);
+            else
+                mItems.get(i).setPushChecked(0);
         }
+
+        //GetProductName();
 
         // 구코드
         //for (String name,ExpDate : listName,listExpDate) {
@@ -316,10 +327,79 @@ public class AddItemActivity extends AppCompatActivity {
             @EverythingIsNonNull
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getBaseContext(),"등록되었습니다." + response.body().toString(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(),"서버로 등록되었습니다." + response.body().toString(),Toast.LENGTH_LONG).show();
                 }else{
                     int statusCode = response.code();
-                    Toast.makeText(getBaseContext(),"실패하였습니다." +statusCode,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(),"서버등록에 실패하였습니다." +statusCode,Toast.LENGTH_LONG).show();
+                    Log.i("MyTag","응답코드 :" + statusCode);
+                }
+            }
+
+            @Override
+            @EverythingIsNonNull
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.i("MyTag","서버 onFailure 에러내용 :" + t.getMessage());
+            }
+        });
+    }
+
+    private void GetProductNameOne(String product_code){
+
+        Call<JsonObject> mCall = NetworkController.getInstance().getNetworkInterface().GetProductNameOne(product_code);
+        mCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            @EverythingIsNonNull
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()){
+                    Log.i("MyTag","상품이름 함 띄워 보까(response.body) :" +response.body().toString());
+                    Toast.makeText(getBaseContext(),"이름받아오는데 성공" + response.body().toString(),Toast.LENGTH_LONG).show();
+                }else{
+                    int statusCode = response.code();
+                    Toast.makeText(getBaseContext(),"이름받아오는데 실패" +statusCode,Toast.LENGTH_LONG).show();
+                    Log.i("MyTag","응답코드 :" + statusCode);
+                }
+            }
+
+            @Override
+            @EverythingIsNonNull
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.i("MyTag","서버 onFailure 에러내용 :" + t.getMessage());
+            }
+        });
+    }
+
+    private void GetProductNameMany(String[] product_code){
+
+        ArrayList<ProductCode> mProductCode = new ArrayList<>();
+        for (int i=0;i<product_code.length;i++){
+            ProductCode miniProductCode = new ProductCode(product_code[i]);
+            mProductCode.add(miniProductCode);
+        }
+
+        Call<JsonObject> mCall = NetworkController.getInstance().getNetworkInterface().GetProductNameMany(mProductCode);
+        mCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            @EverythingIsNonNull
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()){
+
+                    JsonObject responseBody = response.body();
+                    JsonArray tempJsonArray = (JsonArray)responseBody.get("data");
+                    for(int i=0;i<tempJsonArray.size();i++){
+                        JsonObject tempObj = (JsonObject) tempJsonArray.get(i);
+                        Log.i("MyTag","코드가 미쳤다.."+i+"번째 이름: " +tempObj.get("product_name"));
+                        String tempStr = tempObj.get("product_name").toString();
+                        mItems.get(i).setProduct_name(tempStr.substring(1,tempStr.length()-1));
+                    }
+
+                    // 데이터 추가가 완료되었으면 notifyDataSetChanged() 메서드를 호출해 데이터 변경 체크를 실행합니다.
+                    adapter.notifyDataSetChanged();
+
+
+                    Toast.makeText(getBaseContext(),"이름받아오는데 성공" + response.body().toString(),Toast.LENGTH_LONG).show();
+                }else{
+                    int statusCode = response.code();
+                    Toast.makeText(getBaseContext(),"이름받아오는데 실패" +statusCode,Toast.LENGTH_LONG).show();
                     Log.i("MyTag","응답코드 :" + statusCode);
                 }
             }

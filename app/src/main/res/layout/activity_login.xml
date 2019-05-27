@@ -50,9 +50,9 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/login_email"
         android:hint="email_address"
+        android:inputType="textEmailAddress"
         android:paddingLeft="80dp"
         android:paddingBottom="10dp"
-        android:inputType="textEmailAddress"
         android:textColorHint="@color/whiteGray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,9 +71,9 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/login_password"
         android:hint="password"
+        android:inputType="textPassword"
         android:paddingLeft="80dp"
         android:paddingBottom="10dp"
-        android:inputType="textPassword"
         android:textColorHint="@color/whiteGray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -122,8 +122,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.913" />
 
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/real_facebook_login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913" />
+
+    <com.kakao.usermgmt.LoginButton
+        android:id="@+id/real_kakao_login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913" />
+
     <Button
-        android:id="@+id/kakao_login_button"
+        android:id="@+id/fake_kakao_login_button"
         android:layout_width="60dp"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
@@ -143,7 +167,7 @@
         app:layout_constraintVertical_bias="0.913" />
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/fake_facebook_login_button"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"

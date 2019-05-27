@@ -4,11 +4,13 @@ public class ExpirationData {
     private String id;
     private String product_code;
     private String product_expiration_date;
+    private int pushChecked;
 
-    public ExpirationData(String id, String product_code, String product_expiration_date) {
+    public ExpirationData(String id, String product_code, String product_expiration_date, int pushChecked) {
         this.id = id;
         this.product_code = product_code;
         this.product_expiration_date = product_expiration_date;
+        this.pushChecked = pushChecked;
     }
 
     public String getId() {
@@ -33,5 +35,13 @@ public class ExpirationData {
 
     public void setProduct_expiration_date(String product_expiration_date) {
         this.product_expiration_date = product_expiration_date;
+    }
+
+    public int getPushChecked() {
+        return pushChecked;
+    }
+
+    public void setPushChecked(int pushChecked) {
+        this.pushChecked = pushChecked;
     }
 }

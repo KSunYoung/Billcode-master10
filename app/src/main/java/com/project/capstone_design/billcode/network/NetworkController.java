@@ -12,7 +12,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 //public class NetworkController extends Application {
 public class NetworkController extends GlobalApplication {
     private static NetworkController mInstance;
-    private static String URL = "http://35.174.4.10:4500/";
+    //private static String URL = "http://35.174.4.10:4500/";
+    private static String URL = "http://192.168.25.38:4500/";
     // private static String URL = "http://192.168.110.1:8081/Billcode/androidDB.jsp";
 
     private NetworkInterface networkInterface = null;

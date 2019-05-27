@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -22,7 +21,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.kakao.auth.AuthType;
+import com.google.gson.JsonObject;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -36,29 +35,35 @@ import com.kakao.util.helper.log.Logger;
 import com.project.capstone_design.billcode.BackPressCloseHandler;
 import com.project.capstone_design.billcode.MainActivity;
 import com.project.capstone_design.billcode.R;
+import com.project.capstone_design.billcode.network.NetworkController;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.internal.EverythingIsNonNull;
+
 public class LoginActivity extends AppCompatActivity {
 
     ConstraintLayout layout;
 
     private BackPressCloseHandler backPressCloseHandler; // 뒤로 두번 누르면 종료
-    String logpass;
-    String passpass;
+
     EditText userId, userPw;
     Button loginBtn, ourSignUpBtn;
-    private Button btn_kakao_login;
-    private Button btn_facebook_login; // facebook Login Btn
+    Button fake_btn_kakao_login, fake_btn_facebook_login;
+    LoginButton btn_kakao_login;
+    com.facebook.login.widget.LoginButton btn_facebook_login; // facebook Login Btn
 
     private static final String TAG = "IMPORTANT";
     private static final String TAG_Kakao = "IMPORTANT_Kakao";
     private static final String TAG_Facebook = "IMPORTANT_Facebook";
 
-    protected SessionCallback callback; // kakao
+    protected SessionCallback kakao_callback; // kakao
     CallbackManager callbackManager; // facebook
 
     @Override
@@ -66,50 +71,59 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        layout = (ConstraintLayout) findViewById(R.id.LoginLayout); // 키보드 숨김 위해서
+        layout = findViewById(R.id.LoginLayout); // 키보드 숨김 위해서
         backPressCloseHandler = new BackPressCloseHandler(this);
 
-        final String logpass = "qwer";
-        final String passpass = "asdf";
+        fake_btn_facebook_login = findViewById(R.id.fake_facebook_login_button);
+        fake_btn_kakao_login = findViewById(R.id.fake_kakao_login_button);
 
-        userId = (EditText) findViewById(R.id.UserId);
-        userPw = (EditText) findViewById(R.id.UserPw);
-        loginBtn = (Button) findViewById(R.id.LoginBtn);
-        ourSignUpBtn = (Button) findViewById(R.id.our_signup_button);
+        userId = findViewById(R.id.UserId);
+        userPw = findViewById(R.id.UserPw);
+        loginBtn = findViewById(R.id.LoginBtn);
+        ourSignUpBtn = findViewById(R.id.our_signup_button);
 
         // 카카오 로그인 부분
-        btn_kakao_login = (Button) findViewById(R.id.kakao_login_button);
-        callback = new SessionCallback();
-        Session.getCurrentSession().addCallback(callback);
+        btn_kakao_login = findViewById(R.id.real_kakao_login_button);
+        kakao_callback = new SessionCallback();
+        Session.getCurrentSession().addCallback(kakao_callback);
+        btn_kakao_login.performClick();
         //requestMe();
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent nextIntent = new Intent(LoginActivity.this, MainActivity.class);
-                LoginActivity.this.startActivity(nextIntent);
-                finish();
-                /* 로그인 검증관련 미완
-                if ((logpass.equals(userId.getText().toString())) && (passpass.equals(userPw.getText().toString()))) {
-                    Intent nextIntent = new Intent(log.this, map.class);
-                    log.this.startActivity(nextIntent);
-                    finish();
-                    Toast.makeText(log.this, " 로그인에 성공 하였습니다. ", Toast.LENGTH_LONG).show();
-                } else if (logpass.equals(sn.getText().toString()))
-                    Toast.makeText(log.this, " 비밀번호를 다시 입력해 주세요. ", Toast.LENGTH_LONG).show();
+                if(userId.getText().toString().equals("") && userPw.getText().toString().equals(""))
+                    Toast.makeText(getBaseContext(),"아이디와 비밀번호를 입력하세요.",Toast.LENGTH_SHORT).show();
+                else if (userId.getText().toString().equals(""))
+                    Toast.makeText(getBaseContext(),"아이디를 입력하세요.",Toast.LENGTH_SHORT).show();
+                else if(userPw.getText().toString().equals(""))
+                    Toast.makeText(getBaseContext(),"비밀번호를 입력하세요.",Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(log.this, " 아이디를 다시 입력해 주세요. ", Toast.LENGTH_LONG).show();
-                */
+                    UserCheck(userId.getText().toString(), userPw.getText().toString());
             }
 
         });
 
+        fake_btn_kakao_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_kakao_login.performClick();
+            }
+        });
+        /*
+        fake_btn_kakao_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });*/
+
+        /*
         btn_kakao_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Session.getCurrentSession().open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
 
             }
-        });
+        });*/
 
         ourSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-        keybordControl();
+        KeyboardControl();
 
         init();
 
@@ -151,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //빈공간 터치시 키보드 숨김
-    public void keybordControl() {
+    public void KeyboardControl() {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Session.getCurrentSession().removeCallback(callback);
+        Session.getCurrentSession().removeCallback(kakao_callback);
     }
 
     // ISessionCallback
@@ -342,8 +356,8 @@ public class LoginActivity extends AppCompatActivity {
     private void init() {
         callbackManager = CallbackManager.Factory.create();//페이스북의 로그인 콜백을 담당하는 클래스.
 
-        btn_facebook_login = (Button) findViewById(R.id.login_button);//로그인 버튼. 실제 기능 다수가 이 안에 담겨있다.
-        //btn_facebook_login.setReadPermissions("email");
+        btn_facebook_login = findViewById(R.id.real_facebook_login_button);//로그인 버튼. 실제 기능 다수가 이 안에 담겨있다.
+        btn_facebook_login.setReadPermissions("email");
 
         /* Fake Login Btn 구현
         loginbtn = (Button) findViewById(R.id.login_2);  // Facebook Fake 로그인 버튼
@@ -357,6 +371,13 @@ public class LoginActivity extends AppCompatActivity {
         });
         */
 
+        fake_btn_facebook_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_facebook_login.performClick(); //클릭 효과를 옮겨서 이 버튼을 클릭한 효과를 낸다.
+            }
+        });
+        /*
         btn_facebook_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -364,12 +385,101 @@ public class LoginActivity extends AppCompatActivity {
                 //if (loggedIn == true)//현재 로그인이 아닐 때만 로그인한다.
                 //    btn_facebook_login.performClick();//클릭 효과를 옮겨서 이 버튼을 클릭한 효과를 낸다.
             }
-        });
+        });*/
 
 
         // 버튼에 대한 Callback registration
+        btn_facebook_login.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) { //로그인 성공
+                Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
+                GraphRequest request = GraphRequest.newMeRequest(//데이터를 받아내기 위해서
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {//데이터를 받아낸 후(네트워크 연결 후)의 콜백
+                            @Override
+                            public void onCompleted(//완료되었을때 실행된다.
+                                                    JSONObject object,
+                                                    GraphResponse response) {
+                                try {
+                                    String email = object.getString("email");
+                                    String name = object.getString("name");
+                                    String age = object.getString("age");
+                                    Toast.makeText(getApplicationContext(), email, Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG_Facebook, "e-mail from facebook = " + email);
+                                    Log.d(TAG_Facebook, "name from facebook = " + name);
+                                    Log.d(TAG_Facebook, "age from facebook = " + age);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                // Application code
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "email");//데이터를 전부 받아오지 않고 email만 받아온다. "email,name,age" 의 형식으로 받아올수 있음.
+                parameters.putString("fields", "name");//데이터를 전부 받아오지 않고 email만 받아온다. "email,name,age" 의 형식으로 받아올수 있음.
+                parameters.putString("fields", "age");//데이터를 전부 받아오지 않고 email만 받아온다. "email,name,age" 의 형식으로 받아올수 있음.
+                request.setParameters(parameters);
+                request.executeAsync();
 
+                //Log.d(TAG_Facebook, "New ID from facebook = " + Profile.getCurrentProfile().getId());
+                //Log.d(TAG_Facebook, "New name from facebook = " + Profile.getCurrentProfile().getName());
+                //Log.d(TAG_Facebook, "New profileImage from facebook = " + Profile.getCurrentProfile().getProfilePictureUri(100,100));
 
+                Intent nextIntent = new Intent(LoginActivity.this, MainActivity.class);
+                LoginActivity.this.startActivity(nextIntent);
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+                Log.d(TAG_Facebook,"로그인 실패");
+                Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+                Log.d(TAG_Facebook,"로그인 에러");
+                Toast.makeText(getApplicationContext(), "로그인 에러", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void UserCheck(String user_id, String user_pw){
+        Call<JsonObject> mCall = NetworkController.getInstance().getNetworkInterface().UserCheck(user_id, user_pw);
+        mCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            @EverythingIsNonNull
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                // 메세지가 성공일때(ok_result), 실패일때(no_result) 구분
+                String tempMessage = response.body().get("message").toString();
+                int len_of_message = tempMessage.length(); // 메세지 길이
+                tempMessage = tempMessage.substring(1,len_of_message-1); // 메세지에서 "" 표시 제거
+
+                if(response.isSuccessful() && tempMessage.equals("ok_result")){ // 정상인 경우 메인페이지로
+                    Intent nextIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(nextIntent);
+                    finish();
+                    Toast.makeText(getBaseContext(),"성공적으로 로그인되었습니다.",Toast.LENGTH_SHORT).show();
+                }
+                else if(response.isSuccessful() && tempMessage.equals("no_result")){ // 비정상인 경우 알림
+                    Toast.makeText(getBaseContext(),"아이디 혹은 비밀번호를 확인해주세요.",Toast.LENGTH_SHORT).show();
+                }
+                else{ // 아예 서버로부터 값이 없는경우우
+                   int statusCode = response.code();
+                    Toast.makeText(getBaseContext(),"서버와 통신에 실패하였습니다." +statusCode,Toast.LENGTH_SHORT).show();
+                    Log.i("MyTag","응답코드 :" + statusCode);
+                }
+            }
+
+            @Override
+            @EverythingIsNonNull
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.i("MyTag","서버 onFailure 에러내용 :" + t.getMessage());
+            }
+        });
     }
 
 }

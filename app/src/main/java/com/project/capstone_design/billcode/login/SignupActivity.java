@@ -17,13 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import java.util.TimeZone;
-
 import com.google.gson.JsonObject;
 import com.project.capstone_design.billcode.MainActivity;
+import com.project.capstone_design.billcode.R;
 import com.project.capstone_design.billcode.model.UserData;
 import com.project.capstone_design.billcode.network.NetworkController;
-import com.project.capstone_design.billcode.R;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -33,6 +31,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.internal.EverythingIsNonNull;
+
+//import java.util.TimeZone;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -51,7 +51,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        layout = (ConstraintLayout) findViewById(R.id.signupActivity);
+        layout = findViewById(R.id.signupActivity);
         signUpID = (EditText) findViewById(R.id.SignupID);
         signUpName = (EditText) findViewById(R.id.SignupName);
         signUpPhone = (EditText) findViewById(R.id.SignupPhone);
