@@ -40,9 +40,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="3dp">
 
         <Button
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="3dp"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
             android:background="@drawable/addlist_cancle"
@@ -54,6 +58,9 @@
             android:layout_width="1dp"
             android:layout_height="match_parent" />
         <Button
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="3dp"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
             android:background="@drawable/addlist_plus"

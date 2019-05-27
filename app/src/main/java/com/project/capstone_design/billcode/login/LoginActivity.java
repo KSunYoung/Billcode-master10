@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -52,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     ConstraintLayout layout;
 
     private BackPressCloseHandler backPressCloseHandler; // 뒤로 두번 누르면 종료
+    private SharedPreferences mAppData;
 
     EditText userId, userPw;
     Button loginBtn, ourSignUpBtn;
@@ -82,6 +84,9 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.LoginBtn);
         ourSignUpBtn = findViewById(R.id.our_signup_button);
 
+        // 로그인 데이터 보관 부분
+        mAppData = getSharedPreferences("AppData", MODE_PRIVATE);
+
         // 카카오 로그인 부분
         btn_kakao_login = findViewById(R.id.real_kakao_login_button);
         kakao_callback = new SessionCallback();
@@ -97,6 +102,13 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(),"아이디를 입력하세요.",Toast.LENGTH_SHORT).show();
                 else if(userPw.getText().toString().equals(""))
                     Toast.makeText(getBaseContext(),"비밀번호를 입력하세요.",Toast.LENGTH_SHORT).show();
+                else if(userId.getText().toString().equals("test") && userPw.getText().toString().equals("1234")){
+                    InternalDSave("test");
+                    Intent nextIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(nextIntent);
+                    finish();
+                    Toast.makeText(getBaseContext(),"테스트계정으로 로그인되었습니다.",Toast.LENGTH_SHORT).show();
+                }
                 else
                     UserCheck(userId.getText().toString(), userPw.getText().toString());
             }
@@ -447,7 +459,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void UserCheck(String user_id, String user_pw){
+    private void UserCheck(final String user_id, String user_pw){
         Call<JsonObject> mCall = NetworkController.getInstance().getNetworkInterface().UserCheck(user_id, user_pw);
         mCall.enqueue(new Callback<JsonObject>() {
             @Override
@@ -459,6 +471,7 @@ public class LoginActivity extends AppCompatActivity {
                 tempMessage = tempMessage.substring(1,len_of_message-1); // 메세지에서 "" 표시 제거
 
                 if(response.isSuccessful() && tempMessage.equals("ok_result")){ // 정상인 경우 메인페이지로
+                    InternalDSave(user_id);
                     Intent nextIntent = new Intent(LoginActivity.this, MainActivity.class);
                     LoginActivity.this.startActivity(nextIntent);
                     finish();
@@ -480,6 +493,15 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("MyTag","서버 onFailure 에러내용 :" + t.getMessage());
             }
         });
+    }
+
+    // 설정값을 저장하는 함수
+    private void InternalDSave(String user_id) {
+        // SharedPreferences 객체만으론 저장 불가능 Editor 사용
+        SharedPreferences.Editor editor = mAppData.edit();
+
+        editor.putString("USER_ID",user_id);
+        editor.apply();
     }
 
 }

@@ -1,4 +1,5 @@
-package com.project.capstone_design.billcode;
+package com.project.capstone_design.billcode.setting;
+
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.project.capstone_design.billcode.R;
 
 public class Activity_Setting_PushAlert extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.project.capstone_design.billcode;
+package com.project.capstone_design.billcode.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,8 +19,8 @@ import android.widget.Toast;
 import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.project.capstone_design.billcode.R;
 import com.project.capstone_design.billcode.login.LoginActivity;
-//import com.project.capstone_design.billcode.Login.KakaoNetwork.SessionCallback;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class Activity_Setting extends AppCompatActivity {
 
         ListView mListView = findViewById(R.id.setting_item);
 
-        final ArrayList<String> settingList = new ArrayList<String>();
+        final ArrayList<String> settingList = new ArrayList<>();
         settingList.add("로그인 설정");
         settingList.add("푸쉬알림 설정");
         settingList.add("만든 사람들");

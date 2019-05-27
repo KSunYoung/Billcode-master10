@@ -21,15 +21,14 @@
 
         </activity>
         <activity
-            android:name=".Activity_Setting_PushAlert"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".Activity_Setting"
-            android:screenOrientation="portrait"/>
-
-        <activity
             android:name=".notification.Activity_Notification_Example"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".setting.Activity_Setting"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".setting.Activity_Setting_PushAlert"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".login.SignupActivity"

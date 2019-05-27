@@ -22,6 +22,7 @@ import com.project.capstone_design.billcode.home.Home;
 import com.project.capstone_design.billcode.itemList.ItemList;
 import com.project.capstone_design.billcode.login.LoginActivity;
 import com.project.capstone_design.billcode.notification.Activity_Notification_Example;
+import com.project.capstone_design.billcode.setting.Activity_Setting;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

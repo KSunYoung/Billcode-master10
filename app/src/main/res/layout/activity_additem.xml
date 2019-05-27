@@ -20,12 +20,12 @@
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
-            android:background="@color/mintLeaf"
+            android:background="@drawable/additem_cancel_button"
             android:id="@+id/ItemCancel"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="18sp"
-            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textColor="@color/billcode_main_color"
             android:text="취소" />
 
         <ImageView
@@ -34,11 +34,11 @@
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
-            android:background="@color/mintLeaf"
+            android:background="@drawable/additem_confirm_button"
             android:id="@+id/ItemConfirm"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textColor="@color/white"
             android:text="추가" />
 
@@ -46,6 +46,6 @@
 
 </LinearLayout>
 
-<!--
+    <!--
 
--->
+    -->
