@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -15,6 +16,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.project.capstone_design.billcode.MainActivity;
 import com.project.capstone_design.billcode.R;
+import com.project.capstone_design.billcode.login.LoginActivity;
 
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -32,7 +34,7 @@ import androidx.work.WorkManager;
  */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "MyFirebaseMsgService";
+    private static final String TAG = "FCM:FirebaseMsgService";
 
     /**
      * Called when message is received.
@@ -59,7 +61,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // [END_EXCLUDE]
 
         // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+        // 메시지를 받았을 때 동작하는 메소드
+        String title = remoteMessage.getData().get("title");
+        String messageBody = remoteMessage.getData().get("body");
+
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
@@ -80,6 +85,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
+
+        // 이거 추가 하면
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE );
+        PowerManager.WakeLock wakeLock = pm.newWakeLock( PowerManager.SCREEN_BRIGHT_WAKE_LOCK
+                | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
+        wakeLock.acquire(3000);
+
+        sendNotification(title,messageBody);
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -140,7 +153,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String title,String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -155,7 +168,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
+                        .setContentIntent(pendingIntent)
+                        .setLights(getColor(R.color.billcode_main_color),1,1);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

@@ -1,24 +1,24 @@
 package com.project.capstone_design.billcode.model;
 
 public class ExpirationData {
-    private String id;
+    private String user_id;
     private String product_code;
     private String product_expiration_date;
-    private int pushChecked;
+    private int push_alert;
 
-    public ExpirationData(String id, String product_code, String product_expiration_date, int pushChecked) {
-        this.id = id;
+    public ExpirationData(String user_id, String product_code, String product_expiration_date, int push_alert) {
+        this.user_id = user_id;
         this.product_code = product_code;
         this.product_expiration_date = product_expiration_date;
-        this.pushChecked = pushChecked;
+        this.push_alert = push_alert;
     }
 
     public String getId() {
-        return id;
+        return user_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String user_id) {
+        this.user_id = user_id;
     }
 
     public String getProduct_code() {
@@ -37,11 +37,11 @@ public class ExpirationData {
         this.product_expiration_date = product_expiration_date;
     }
 
-    public int getPushChecked() {
-        return pushChecked;
+    public int getPush_alert() {
+        return push_alert;
     }
 
-    public void setPushChecked(int pushChecked) {
-        this.pushChecked = pushChecked;
+    public void setPush_alert(int push_alert) {
+        this.push_alert = push_alert;
     }
 }

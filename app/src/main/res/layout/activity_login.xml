@@ -202,15 +202,17 @@
         app:srcCompat="@drawable/login_billcode_logo" />
 
 
-    <Button
-        android:id="@+id/button2"
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/CheckBox2"
         android:layout_width="130dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/login_remember"
+        android:buttonTint="@color/billcode_main_color"
+        android:text="Remember me"
+        android:textColor="@color/billcode_main_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

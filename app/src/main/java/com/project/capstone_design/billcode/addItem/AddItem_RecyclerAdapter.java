@@ -44,7 +44,7 @@ public class AddItem_RecyclerAdapter extends RecyclerView.Adapter<AddItem_Recycl
         final boolean mPushChecked;
         Log.i("IMPORTANT", ">>>>>>>>>> 홀더에 포지션   :  " + position);
         Log.i("IMPORTANT", ">>>>>>>>>> 피곤하다 IMAGE값   :  " + mItems.get(position).getImage());
-        Picasso.get().load("http://10.80.72.173:4500/images/" + mItems.get(position).getImage() + ".jpg").fit().into(viewHolder.mProductImageView); // 이미지 50 50으로 자름, centerCrop()등 가능
+        Picasso.get().load("http://192.168.0.18:4500/images/" + mItems.get(position).getImage() + ".jpg").fit().into(viewHolder.mProductImageView); // 이미지 50 50으로 자름, centerCrop()등 가능
         // Picasso.get().load("http://35.174.4.10:4500/images/" + mItems.get(position).getImage() + ".jpg").fit().into(viewHolder.mProductImageView); // 이미지 50 50으로 자름, centerCrop()등 가능
         Log.i("IMPORTANT", ">>>>>>>>>> 피곤하다 NAME값   :  " + mItems.get(position).getProduct_code());
         viewHolder.mProductNameView.setText(mItems.get(position).getProduct_name());
@@ -86,9 +86,9 @@ public class AddItem_RecyclerAdapter extends RecyclerView.Adapter<AddItem_Recycl
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
-                    mItems.get(position).setPushChecked(true);
+                    mItems.get(position).setPush_alert(true);
                 else
-                    mItems.get(position).setPushChecked(false);
+                    mItems.get(position).setPush_alert(false);
             }
         });
         */

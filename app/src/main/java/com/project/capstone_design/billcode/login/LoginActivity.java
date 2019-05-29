@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.content.SharedPreferences;
@@ -59,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn, ourSignUpBtn;
     Button fake_btn_kakao_login, fake_btn_facebook_login;
     LoginButton btn_kakao_login;
+    AppCompatCheckBox checkBox;
     com.facebook.login.widget.LoginButton btn_facebook_login; // facebook Login Btn
 
     private static final String TAG = "IMPORTANT";
@@ -78,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
         fake_btn_facebook_login = findViewById(R.id.fake_facebook_login_button);
         fake_btn_kakao_login = findViewById(R.id.fake_kakao_login_button);
+        checkBox = findViewById(R.id.CheckBox2);
 
         userId = findViewById(R.id.UserId);
         userPw = findViewById(R.id.UserPw);
@@ -119,6 +123,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 btn_kakao_login.performClick();
+            }
+        });
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                InternalAutoLoginSave(isChecked);
             }
         });
         /*
@@ -445,15 +456,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
                 // App code
-                Log.d(TAG_Facebook,"로그인 실패");
-                Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
+                Log.d(TAG_Facebook,"페이스북 로그인 실패");
+                Toast.makeText(getApplicationContext(), "페이스북 로그인 실패", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException exception) {
                 // App code
-                Log.d(TAG_Facebook,"로그인 에러");
-                Toast.makeText(getApplicationContext(), "로그인 에러", Toast.LENGTH_SHORT).show();
+                Log.d(TAG_Facebook,"페이스북 로그인 에러");
+                Toast.makeText(getApplicationContext(), "페이스북 로그인 에러", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -499,8 +510,20 @@ public class LoginActivity extends AppCompatActivity {
     private void InternalDSave(String user_id) {
         // SharedPreferences 객체만으론 저장 불가능 Editor 사용
         SharedPreferences.Editor editor = mAppData.edit();
-
         editor.putString("USER_ID",user_id);
+        editor.apply();
+    }
+
+    // 설정값을 저장하는 함수
+    private void InternalAutoLoginSave(Boolean isChecked) {
+        // SharedPreferences 객체만으론 저장 불가능 Editor 사용
+        SharedPreferences.Editor editor = mAppData.edit();
+        if(isChecked)
+            Log.i(TAG, "저장전 ischecked: true");
+        else
+            Log.i(TAG, "저장전 ischecked: false");
+
+        editor.putBoolean("USER_AUTO_LOGIN",isChecked);
         editor.apply();
     }
 

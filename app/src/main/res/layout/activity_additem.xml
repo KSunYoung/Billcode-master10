@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/b"
-    android:background="@color/white">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/AddItem_RecyclerViewAddItem"
-        android:layout_marginTop="3dp"
-        android:layout_weight="100"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_marginTop="3dp"
+        android:layout_weight="100" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,34 +19,29 @@
         android:orientation="horizontal">
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_weight="1"
-            android:background="@drawable/additem_cancel_button"
             android:id="@+id/ItemCancel"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="20sp"
+            android:layout_weight="1"
+            android:background="@drawable/additem_cancel_button"
+            android:text="취소"
             android:textColor="@color/billcode_main_color"
-            android:text="취소" />
+            android:textSize="20sp" />
 
         <ImageView
             android:layout_width="1dp"
             android:layout_height="match_parent" />
+
         <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_weight="1"
-            android:background="@drawable/additem_confirm_button"
             android:id="@+id/ItemConfirm"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="20sp"
+            android:layout_weight="1"
+            android:background="@drawable/additem_confirm_button"
+            android:text="추가"
             android:textColor="@color/white"
-            android:text="추가" />
-
+            android:textSize="20sp" />
     </LinearLayout>
-
 </LinearLayout>
-
-    <!--
-
-    -->

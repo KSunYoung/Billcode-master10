@@ -1,6 +1,5 @@
 package com.project.capstone_design.billcode.network;
 
-
 import com.google.gson.JsonObject;
 import com.project.capstone_design.billcode.model.ExpirationData;
 import com.project.capstone_design.billcode.model.ProductCode;
@@ -14,6 +13,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface NetworkInterface {
@@ -21,8 +21,21 @@ public interface NetworkInterface {
     @GET("user")
     Call<ArrayList<JsonObject>> getAllUserData();
 
+    @FormUrlEncoded
+    @POST("token/checkToken")
+    Call<JsonObject> CheckToken(
+            @Field("user_id") String user_id
+    );
+
+    @FormUrlEncoded
+    @PUT("token/updateToken")
+    Call<JsonObject> UpdateToken(
+            @Field("user_id") String user_id,
+            @Field("user_token") String user_token
+    );
+
     @GET("login/{user_id}")
-    Call<JsonObject> IDCheck(@Path("user_id") String user_id);
+    Call<JsonObject> CheckID(@Path("user_id") String user_id);
 
     @FormUrlEncoded
     @POST("login")
@@ -58,8 +71,8 @@ public interface NetworkInterface {
     // @GET("product/{productCode}.jpg")
     // Call<JsonObject> GetProductImage(@Field("productCode") String productCode);
 
-    @POST("expirationData")
-    Call<JsonObject> PostExpirationData(@Body ArrayList<ExpirationData> mExpirationData);
+    @POST("putUserItems")
+    Call<JsonObject> InsertExpirationData(@Body ArrayList<ExpirationData> mExpirationData);
 }
 /*
 public interface NetworkInterface {
