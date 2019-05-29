@@ -9,9 +9,8 @@
     <application
         android:name=".network.NetworkController"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher_billcode_icon_round"
+        android:icon="@mipmap/ic_launcher_billcode_icon"
         android:label="BillCode"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/NewAppTheme">
