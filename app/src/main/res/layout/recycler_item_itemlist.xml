@@ -76,7 +76,8 @@
                         android:layout_height="match_parent"
                         android:clickable="true"
                         android:focusable="true"
-                        android:text="@string/push_on"/>
+                        android:text="@string/push_on"
+                        android:textColor="@color/billcode_main_color"/>
                     <TextView
                         android:textSize="15sp"
                         android:visibility="gone"

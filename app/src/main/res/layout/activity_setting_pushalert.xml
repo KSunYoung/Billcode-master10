@@ -15,7 +15,7 @@
             android:id="@+id/Setting_PushAlert_Toolbar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/white"
+            android:background="@color/billcode_main_color"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="푸쉬알림 설정"
-                android:textColor="@color/billcode_main_color" />
+                android:textColor="@color/white" />
 
         </android.support.v7.widget.Toolbar>
 

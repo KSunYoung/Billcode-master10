@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_lists) {
             //Intent intent = new Intent(MainActivity.this, ItemListActivity.class);
             //startActivity(intent);
-
+            //목록페이지
             mFragment = new ItemList();
             //Toast.makeText(this, "상품목록은 준비중입니다.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_buy) {

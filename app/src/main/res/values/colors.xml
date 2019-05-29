@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="mintLeaf">#00B992</color>
-    <color name="colorPrimary">#00B992</color>
+    <color name="mintLeaf">#FF9F1C</color>
+    <color name="colorPrimary">#FF9F1C</color>
     <!-- <color name="colorPrimary">#008577</color> -->
     <color name="white">#FFFFFF</color>
-    <color name="colorPrimaryDark">#00B992</color>
+    <color name="colorPrimaryDark">#FF9F1C</color>
     <color name="colorAccent">#D81B60</color>
     <!-- ios Color Series -->
     <color name="ios_red">#FF3B30</color>
@@ -25,4 +25,5 @@
     <color name="pastelMint">#D389FCB3</color>
     <color name="cutePink">#FFA292</color>
     <color name="billcode_main_color">#FF9F1C</color>
+    <color name="billcode_second_color">#FFBF1C</color>
 </resources>
