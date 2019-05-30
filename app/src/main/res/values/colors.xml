@@ -26,4 +26,5 @@
     <color name="cutePink">#FFA292</color>
     <color name="billcode_main_color">#FF9F1C</color>
     <color name="billcode_second_color">#FFBF1C</color>
+    <color name="billcode_gray">#EFEFEF</color>
 </resources>

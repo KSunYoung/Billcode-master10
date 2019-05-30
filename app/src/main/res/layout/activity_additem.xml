@@ -15,16 +15,17 @@
             android:id="@+id/Setting_PushAlert_Toolbar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/billcode_main_color"
+            android:background="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="sans-serif-black"
+                android:fontFamily="@font/dream"
                 android:text="상품추가"
-                android:textColor="@color/white" />
+                android:textColor="@color/billcode_main_color"
+                android:textSize="16sp" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -32,10 +33,10 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/AddItem_RecyclerViewAddItem"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:layout_marginTop="3dp"
-        android:layout_weight="100" />
+        android:layout_weight="100"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,32 +46,36 @@
         <Button
             android:id="@+id/ItemCancel"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
+            android:layout_width="70dp"
             android:layout_height="50dp"
             android:layout_marginLeft="40dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:background="@drawable/additem_cancel_button"
+            android:background="@drawable/main_button2"
+            android:fontFamily="@font/nanumaquare"
             android:text="취소"
             android:textColor="@color/billcode_main_color"
             android:textSize="20sp" />
 
-        <ImageView
-            android:layout_width="1dp"
-            android:layout_height="match_parent" />
-
         <Button
             android:id="@+id/ItemConfirm"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
+            android:layout_width="70dp"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:background="@drawable/additem_confirm_button"
+            android:background="@drawable/main_button"
+            android:fontFamily="@font/nanumaquare"
             android:text="추가"
             android:textColor="@color/white"
             android:textSize="20sp" />
+
     </LinearLayout>
+
 </LinearLayout>
+
+    <!--
+
+    -->

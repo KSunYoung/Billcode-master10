@@ -5,59 +5,82 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="236dp"
+        android:background="@drawable/home_image"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/Setting_PushAlert_Toolbar"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/billcode_main_color"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif-black"
-                android:text="홈"
-                android:textColor="@color/white" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/Setting_PushAlert_Toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/white"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        </android.support.v7.widget.Toolbar>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-black"
+                    android:text="홈"
+                    android:textColor="@color/billcode_main_color" />
 
-    </android.support.design.widget.AppBarLayout>
+            </android.support.v7.widget.Toolbar>
 
-    <!--
-    <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPagerandroid
-        android:id="@+id/autoViewPager"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:padding="20dp" />
-    -->
+        </android.support.design.widget.AppBarLayout>
+
+        <ImageView
+            android:id="@+id/nav_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="165dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/nav_header_desc"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/ic_launcher_billcode_icon_round" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:fontFamily="@font/allerta"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:text="Welcome to BillCode!"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/billcode_second_color"
+        android:background="@color/billcode_gray"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:fontFamily="casual"
-            android:text="유통기한 마감이 얼마 남지 않았어요ㅜㅜ~"
-            android:textColor="@color/white"
+            android:fontFamily="@font/nanumaquare"
+            android:paddingLeft="100dp"
+            android:paddingTop="5dp"
+            android:text="유통기한 마감 임박!"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Home_RecyclerViewItemList"
             android:layout_width="387dp"
-            android:layout_height="378dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_height="378dp">
 
         </android.support.v7.widget.RecyclerView>
 

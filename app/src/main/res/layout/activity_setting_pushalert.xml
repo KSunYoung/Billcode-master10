@@ -15,15 +15,17 @@
             android:id="@+id/Setting_PushAlert_Toolbar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/billcode_main_color"
+            android:background="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:fontFamily="@font/dream"
                 android:text="푸쉬알림 설정"
-                android:textColor="@color/white" />
+                android:textColor="@color/billcode_main_color"
+                android:textSize="16sp" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -45,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
+                android:fontFamily="@font/nanumaquare"
                 android:gravity="center"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
@@ -99,6 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
+                android:fontFamily="@font/nanumaquare"
                 android:gravity="center"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
