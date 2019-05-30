@@ -220,7 +220,7 @@ public class AddItemActivity extends AppCompatActivity {
 
 
     private void ExpDateUpload() {
-        Call<JsonObject> mCall = NetworkController.getInstance().getNetworkInterface().InsertExpirationData(mExpirationData);
+        Call<JsonObject> mCall = NetworkController.getInstance().getNetworkInterface().PostExpirationData(mExpirationData);
         mCall.enqueue(new Callback<JsonObject>() {
             @Override
             @EverythingIsNonNull
@@ -232,7 +232,6 @@ public class AddItemActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "서버등록에 실패하였습니다." + statusCode, Toast.LENGTH_LONG).show();
                     Log.i("MyTag", "응답코드 :" + statusCode);
                 }
-                finish();
             }
 
             @Override

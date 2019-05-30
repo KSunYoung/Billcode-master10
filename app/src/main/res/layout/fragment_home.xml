@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="236dp"
+        android:layout_height="257dp"
         android:background="@drawable/home_image"
         android:orientation="vertical">
 
@@ -20,7 +20,7 @@
                 android:id="@+id/Setting_PushAlert_Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@color/white"
+                android:background="@color/billcode_main_color"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
                 <TextView
@@ -29,7 +29,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="sans-serif-black"
                     android:text="홈"
-                    android:textColor="@color/billcode_main_color" />
+                    android:textColor="@color/white" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -47,10 +47,10 @@
             app:srcCompat="@mipmap/ic_launcher_billcode_icon_round" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:fontFamily="@font/allerta"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="monospace"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:text="Welcome to BillCode!"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -63,24 +63,24 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/billcode_gray"
+        android:background="@color/billcode_second_color"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:fontFamily="@font/nanumaquare"
-            android:paddingLeft="100dp"
-            android:paddingTop="5dp"
-            android:text="유통기한 마감 임박!"
-            android:textColor="@color/black"
+            android:fontFamily="casual"
+            android:text="유통기한 마감이 얼마 남지 않았어요ㅜㅜ~"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Home_RecyclerViewItemList"
             android:layout_width="387dp"
-            android:layout_height="378dp">
+            android:layout_height="378dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
 
         </android.support.v7.widget.RecyclerView>
 

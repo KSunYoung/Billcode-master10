@@ -16,17 +16,16 @@
             android:id="@+id/setting_toolbar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/white"
+            android:background="@color/billcode_main_color"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/dream"
+                android:fontFamily="sans-serif-black"
                 android:text="재구매"
-                android:textColor="@color/billcode_main_color"
-                android:textSize="16sp" />
+                android:textColor="@color/white" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -49,10 +48,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/nanumaquare"
             android:text="1. 롯데마트"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <EditText
@@ -73,10 +71,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/nanumaquare"
             android:text="2. 홈플러스"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/imageView5"
@@ -105,10 +102,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/nanumaquare"
             android:text="3. 이마트"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/imageView6"
@@ -136,10 +132,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/nanumaquare"
             android:text="4. 코스트코"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/imageView8"

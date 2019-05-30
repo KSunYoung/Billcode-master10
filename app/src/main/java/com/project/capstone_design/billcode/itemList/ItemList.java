@@ -1,25 +1,16 @@
 package com.project.capstone_design.billcode.itemList;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.content.SharedPreferences;
 
@@ -46,7 +37,6 @@ public class ItemList extends Fragment {
     private RecyclerView.Adapter adapter;
     private RecyclerView mRecyclerView;
     private ArrayList<ItemList_RecyclerItem> mItems = new ArrayList<>();
-    TextView List_zero_text;
     ImageView List_zero_img;
     Button List_zero_button;
     @Override
@@ -56,21 +46,17 @@ public class ItemList extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         //LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.activity_itemlist_ifzero, container, false);
-        View mView = inflater.inflate(R.layout.fragment_itemlist2, container, false);
+        View mView = inflater.inflate(R.layout.fragment_itemlist, container, false);
 
         mAppData = getActivity().getSharedPreferences("AppData", getActivity().MODE_PRIVATE);
         final String internal_user_id = InternalIDLoad();
 
-        List_zero_img = (ImageView)mView.findViewById(R.id.list_zero_img);
-        List_zero_text = (TextView)mView.findViewById(R.id.list_zero_text);
-        List_zero_button= (Button)mView.findViewById(R.id.list_zero_button);
+        //List_zero_img = (ImageView)mView.findViewById(R.id.list_zero_img);
+        //List_zero_button= (Button)mView.findViewById(R.id.list_zero_button);
 
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
-                new IntentFilter("delete-message"));
-
-        final MainActivity mActivity = new MainActivity();
+        final MainActivity mActivity = (MainActivity) getActivity();
         mRecyclerView = mView.findViewById(R.id.ItemList_RecyclerViewItemList);
-        adapter = new ItemList_RecyclerAdapter(mItems, getContext()); // 어답터에 아이템 연결
+        adapter = new ItemList_RecyclerAdapter(mItems); // 어답터에 아이템 연결
         // setRecyclerView(); // 리사이클러뷰를 어답터에 연결, 여러가지 기본 세팅해준다.
 
         setRecyclerView();
@@ -95,7 +81,6 @@ public class ItemList extends Fragment {
         });
         */
         //return layout;
-
 
 
         return mView;
@@ -141,40 +126,60 @@ public class ItemList extends Fragment {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()){
                     Log.i("MyTag","response 찍어보기 :" +response.body());
-                    if(response.body().get("data").toString().equals("\"테이블에 기록이 존재하지 않음\"")){
-                        mRecyclerView.setVisibility(View.GONE);
-                        List_zero_button.setVisibility(View.VISIBLE);
-                        List_zero_text.setVisibility(View.VISIBLE);
-                        List_zero_img.setVisibility(View.VISIBLE);
+                    JsonObject responseBody = response.body();
+                    JsonArray tempJsonArray = (JsonArray)responseBody.get("data");
+                    //JsonArray jArray= responseBody.get("data");
+                    for(int i=0;i<tempJsonArray.size();i++){
+                        JsonObject tempObj = (JsonObject) tempJsonArray.get(i);
+
+                        String tempStrName = tempObj.get("product_name").toString();
+                        String tempImage = tempObj.get("product_code").toString();
+                        String tempStrExpDate = tempObj.get("product_expiration_date").toString();
+                        int tempPushChecked = tempObj.get("push_alert").getAsInt();
+
+                        String tempExpDate = "";
+                        tempExpDate += tempStrExpDate.substring(3,5);
+                        tempExpDate += tempStrExpDate.substring(6,8);
+                        tempExpDate += tempStrExpDate.substring(9,11);
+                        Log.i("MyTag","임시 유통기한: " +tempExpDate);
+                        Log.i("MyTag","코드가 미쳤다.."+i+"번째 이름: " +tempStrName);
+                        Log.i("MyTag","코드가 미쳤다.."+i+"번째 유통기한: " +tempObj.get("product_expiration_date"));
+                        Log.i("MyTag","코드가 미쳤다.."+i+"번째 푸쉬알림설정: " +tempObj.get("push_alert"));
+                        mItems.add(new ItemList_RecyclerItem(tempStrName.substring(1,tempStrName.length()-1),tempImage.substring(1,tempImage.length()-1),tempExpDate,tempPushChecked));
                     }
-                    else{
-                        Log.i("MyTag","response 찍어보기 :" +response.body());
-                        JsonObject responseBody = response.body();
-                        JsonArray tempJsonArray = (JsonArray)responseBody.get("data");
-                        //JsonArray jArray= responseBody.get("data");
-                        for(int i=0;i<tempJsonArray.size();i++){
-                            JsonObject tempObj = (JsonObject) tempJsonArray.get(i);
+                    /*
+                    String temp_str = responseBody.get("data").toString();
+                    temp_str.
+                    String[] temp_strArray = temp_str.split("product_name");
 
-                            String tempStrName = tempObj.get("product_name").toString();
-                            String tempImage = tempObj.get("product_code").toString();
-                            String tempStrExpDate = tempObj.get("product_expiration_date").toString();
-                            int tempPushChecked = tempObj.get("push_alert").getAsInt();
+                    for(int i=0;i<temp_strArray.length;i++)
+                        Log.i("MyTag","따로따로 찍어본다~ "+i+"string :" +temp_strArray[i]);
+                    */
+                    /*
+                    for(int i=0;i<temp_str.length();i++){
+                        if(i==0)
+                            Log.i("MyTag","따로따로 찍어본다~ "+i+"string :" +temp_strArray[i].substring(18,(temp_strArray[i].length()-2)));
+                        else if(i==temp_strArray.length-1)
+                            Log.i("MyTag","따로따로 찍어본다~ "+i+"string :" +temp_strArray[i].substring(17,(temp_strArray[i].length()-3)));
+                        else
+                            Log.i("MyTag","따로따로 찍어본다~ "+i+"string :" +temp_strArray[i].substring(17,(temp_strArray[i].length()-2)));
+                    }*/
 
-                            String tempExpDate = "";
-                            tempExpDate += tempStrExpDate.substring(3,5);
-                            tempExpDate += tempStrExpDate.substring(6,8);
-                            tempExpDate += tempStrExpDate.substring(9,11);
-                            Log.i("MyTag","임시 유통기한: " +tempExpDate);
-                            Log.i("MyTag","코드가 미쳤다.."+i+"번째 이름: " +tempStrName);
-                            Log.i("MyTag","코드가 미쳤다.."+i+"번째 유통기한: " +tempObj.get("product_expiration_date"));
-                            Log.i("MyTag","코드가 미쳤다.."+i+"번째 푸쉬알림설정: " +tempObj.get("push_alert"));
-                            mItems.add(new ItemList_RecyclerItem(tempStrName.substring(1,tempStrName.length()-1),tempImage.substring(1,tempImage.length()-1),tempExpDate,tempPushChecked));
-                        }
 
-                        // 데이터 추가가 완료되었으면 notifyDataSetChanged() 메서드를 호출해 데이터 변경 체크를 실행합니다.
-                        adapter.notifyDataSetChanged();
-                    }
+                    /*
+                    for (int i = 0; i < mItems.size(); i++) {
+                        if(i==0)
+                            mItems.get(i).name(temp_strArray[i].substring(18,(temp_strArray[i].length()-2)));
+                        else if(i==newnewpart.length-1)
+                            mItems.get(i).setProduct_name(temp_strArray[i].substring(17,(temp_strArray[i].length()-3)));
+                        else
+                            mItems.get(i).setProduct_name(temp_strArray[i].substring(17,(temp_strArray[i].length()-2)));
+                    }*/
 
+                    // 데이터 추가가 완료되었으면 notifyDataSetChanged() 메서드를 호출해 데이터 변경 체크를 실행합니다.
+                    adapter.notifyDataSetChanged();
+
+                    //Toast.makeText(getActivity(),"이름받아오는데 성공" + response.body().toString(),Toast.LENGTH_LONG).show();
                 }else{
                     int statusCode = response.code();
                     Toast.makeText(getActivity(),"이름받아오는데 실패" +statusCode,Toast.LENGTH_LONG).show();
@@ -204,7 +209,7 @@ public class ItemList extends Fragment {
                         JsonObject tempObj = (JsonObject) tempJsonArray.get(i);
 
                         String tempStrName = tempObj.get("product_name").toString();
-                        String tempProductCode = tempObj.get("product_code").toString();
+                        String tempImage = tempObj.get("product_code").toString();
                         String tempStrExpDate = tempObj.get("product_expiration_date").toString();
                         int tempPushChecked = tempObj.get("push_alert").getAsInt();
 
@@ -213,7 +218,7 @@ public class ItemList extends Fragment {
                         tempExpDate += tempStrExpDate.substring(6,8);
                         tempExpDate += tempStrExpDate.substring(9,11);
                         //Log.i("MyTag","이미지 넣어지는값 :" +tempImage.substring(1,tempImage.length()-1));
-                        mItems.add(new ItemList_RecyclerItem(tempStrName.substring(1,tempStrName.length()-1),tempProductCode.substring(1,tempProductCode.length()-1),tempExpDate,tempPushChecked));
+                        mItems.add(new ItemList_RecyclerItem(tempStrName.substring(1,tempStrName.length()-1),tempImage.substring(1,tempImage.length()-1),tempExpDate,tempPushChecked));
                     }
 
                     // 데이터 추가가 완료되었으면 notifyDataSetChanged() 메서드를 호출해 데이터 변경 체크를 실행합니다.
@@ -242,47 +247,4 @@ public class ItemList extends Fragment {
         //savedAppData = mAppData.getBoolean("SAVED_APP_DATA", false);
         return mAppData.getString("USER_ID", null);
     }
-
-    public void ItemDelete(String ExpDate, String product_code){
-        String user_id = mAppData.getString("USER_ID", null);
-        Call<JsonObject> mCall = NetworkController.getInstance().getNetworkInterface().DeleteProductInUserList(user_id, ExpDate, product_code);
-        mCall.enqueue(new Callback<JsonObject>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                // 메세지가 성공일때(ok_result), 실패일때(no_result) 구분
-                String tempMessage = response.body().get("message").toString();
-                int len_of_message = tempMessage.length(); // 메세지 길이
-                tempMessage = tempMessage.substring(1,len_of_message-1); // 메세지에서 "" 표시 제거
-
-                if(response.isSuccessful() && tempMessage.equals("ok_result")){ // 정상인 경우 메인페이지로
-                    Toast.makeText(getActivity(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
-                }
-                else if(response.isSuccessful() && tempMessage.equals("no_result")){ // 비정상인 경우 알림
-                    Toast.makeText(getActivity(),"삭제중 에러발생",Toast.LENGTH_SHORT).show();
-                }
-                else{ // 아예 서버로부터 값이 없는경우우
-                    int statusCode = response.code();
-                    Toast.makeText(getActivity(),"서버와 통신에 실패하였습니다." +statusCode,Toast.LENGTH_SHORT).show();
-                    Log.i("MyTag","응답코드 :" + statusCode);
-                }
-            }
-
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.i("MyTag","서버 onFailure 에러내용 :" + t.getMessage());
-            }
-        });
-    }
-
-    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
-            String product_code = intent.getStringExtra("product_code");
-            String expDate = intent.getStringExtra("expDate");
-            ItemDelete(expDate,product_code);
-        }
-    };
 }

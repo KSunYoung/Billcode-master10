@@ -16,10 +16,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:fontFamily="@font/dream"
-        android:text="Live Fresh!"
-        android:textColor="@color/billcode_main_color"
-        android:textSize="20sp"
+        android:background="@drawable/login_live_fresh"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -35,15 +32,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:fontFamily="@font/dream"
-        android:text="login_to_continue_billcode"
-        android:textColor="@color/billcode_main_color"
-        android:textSize="18sp"
+        android:background="@drawable/login_to_continue_billcode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.305" />
+        app:layout_constraintVertical_bias="0.307" />
 
     <EditText
         android:id="@+id/UserId"
@@ -55,13 +50,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/login_email"
-        android:fontFamily="@font/nanumaquare"
         android:hint="Email address"
+        android:textSize="15dp"
         android:inputType="textEmailAddress"
         android:paddingLeft="80dp"
         android:paddingBottom="9dp"
         android:textColorHint="@color/whiteGray"
-        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -79,7 +73,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/login_password"
-        android:fontFamily="@font/nanumaquare"
         android:hint="Password"
         android:inputType="textPassword"
         android:paddingLeft="80dp"
@@ -95,27 +88,22 @@
 
     <Button
         android:id="@+id/LoginBtn"
-
-        android:layout_width="270dp"
-        android:layout_height="40dp"
+        android:layout_width="330dp"
+        android:layout_height="85dp"
         android:layout_gravity="end"
         android:layout_marginStart="8dp"
-
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/main_button"
-        android:fontFamily="@font/nanumaquare"
-        android:text="Sign In"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-
+        android:background="@drawable/login_signin"
+        android:textColor="@color/darkGray"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.658" />
+        app:layout_constraintVertical_bias="0.671" />
 
 
     <Button
@@ -234,15 +222,13 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="130dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:fontFamily="@font/nanumaquare"
-        android:text="New User? Sign Up!"
-        android:textColor="@color/billcode_main_color"
+        android:background="@drawable/login_new_user_signup"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

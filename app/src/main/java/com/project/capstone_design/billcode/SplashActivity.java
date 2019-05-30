@@ -1,13 +1,10 @@
 package com.project.capstone_design.billcode;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.kakao.auth.ISessionCallback;
@@ -27,44 +24,29 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if(OurLoggedInCheckUp());
-        else{
-            // 세션의 연결여부 검사는 카카오 -> 페이스북 -> 자체로그인 순서
-            callback = new ISessionCallback() {
-                @Override
-                public void onSessionOpened() {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            goToMainActivity();
-                        }
-                    }, 1000); }
+        // 세션의 연결여부 검사 !아직 카카오만 구현되어있음, 자체 로그인과 페이스북 구현필요
+        callback = new ISessionCallback() {
+            @Override
+            public void onSessionOpened() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        goToMainActivity();
+                    }
+                }, 1000); }
 
-                @Override
-                public void onSessionOpenFailed(KakaoException exception) { redirectToLoginActivity(); }
-            };
+            @Override
+            public void onSessionOpenFailed(KakaoException exception) { redirectToLoginActivity(); }
+        };
 
-            // 연결된 세션이 없으면 로그인 화면으로
-            Session.getCurrentSession().addCallback(callback);
-            if(!Session.getCurrentSession().checkAndImplicitOpen()){
-                FacebookLoggedInCheckUp();
+
+        // 연결된 세션이 없으면 로그인 화면으로
+        Session.getCurrentSession().addCallback(callback);
+        if(!Session.getCurrentSession().checkAndImplicitOpen()){
+            FacebookLoggedInCheckUp();
             }
-        }
 
 
-
-
-    }
-
-    private boolean OurLoggedInCheckUp(){
-        SharedPreferences mAppData = getSharedPreferences("AppData", MODE_PRIVATE);
-        boolean loggedIn = mAppData.getBoolean("USER_AUTO_LOGIN", false);
-
-        if (loggedIn){ // 자동로그인인경우 메인으로 바로 이동
-            goToMainActivity();
-            return true;
-        }else
-            return false;
     }
 
     private void FacebookLoggedInCheckUp(){
@@ -85,8 +67,6 @@ public class SplashActivity extends AppCompatActivity {
             }, 1000);
     }
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -95,7 +75,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void goToMainActivity() {
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
