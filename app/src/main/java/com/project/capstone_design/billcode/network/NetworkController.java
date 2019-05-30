@@ -12,9 +12,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 //public class NetworkController extends Application {
 public class NetworkController extends GlobalApplication {
     private static NetworkController mInstance;
-    //private static String URL = "http://3.92.189.19:4500/"; // 최종 IP, 졸업작품 전까지 유지예정
+    private static String URL = "http://3.92.189.19:4500/"; // 최종 IP, 졸업작품 전까지 유지예정
     //private static String URL = "http://35.174.4.10:4500/";
-    private static String URL = "http://192.168.0.18:4500/";
+    //private static String URL = "http://192.168.0.18:4500/";
     // private static String URL = "http://192.168.110.1:8081/Billcode/androidDB.jsp";
 
     private NetworkInterface networkInterface = null;

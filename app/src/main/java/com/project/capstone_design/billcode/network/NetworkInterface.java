@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -62,8 +63,12 @@ public interface NetworkInterface {
     @GET("getUserItemList/byExpDateUp/{user_id}")
     Call<JsonObject> GetUserItemListByExpDateUp(@Path("user_id") String user_id);
 
+    @FormUrlEncoded
+    @POST("deleteProductInUserItemList")
+    Call<JsonObject> DeleteProductInUserList(@Field("user_id") String user_id,
+                                             @Field("product_expiration_date") String expDate,
+                                             @Field("product_code") String product_code);
 
-    //@FormUrlEncoded
     @POST("user")
     Call<JsonObject> Register_User(@Body UserData mUserData);
     // Call<JsonObject> user(@Field("id") String id, @Field("password") String password, @Field("name") String name, @Field("phone") String phone);

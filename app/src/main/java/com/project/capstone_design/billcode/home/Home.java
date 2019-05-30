@@ -12,10 +12,17 @@ import android.view.ViewGroup;
 
 import com.project.capstone_design.billcode.MainActivity;
 import com.project.capstone_design.billcode.R;
+import com.project.capstone_design.billcode.home.banner.AutoScrollAdapter;
 
 import java.util.ArrayList;
 
+import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
+
 public class Home extends Fragment {
+
+    // 오토스크롤 부분
+    AutoScrollViewPager mAutoViewPager;
+
     private RecyclerView.Adapter adapter;
     private RecyclerView mRecyclerView;
     private ArrayList<Home_RecyclerItem> mItems = new ArrayList<>();
@@ -28,6 +35,22 @@ public class Home extends Fragment {
         //LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.activity_itemlist_ifzero, container, false);
         View mView = (View) inflater.inflate(R.layout.fragment_home, container, false);
         final MainActivity mActivity = (MainActivity) getActivity();
+
+
+        /*
+        ArrayList<String> imgUrl = new ArrayList<>(); //이미지 url를 저장하는 arraylist
+        imgUrl.add("http://3.92.189.19:4500/banner_images/banner_img_1.jpg");
+        imgUrl.add("http://3.92.189.19:4500/banner_images/banner_img_2.jpg");
+        imgUrl.add("http://3.92.189.19:4500/banner_images/banner_img_3.jpg");
+        imgUrl.add("http://3.92.189.19:4500/banner_images/banner_img_4.png");
+
+        mAutoViewPager = (AutoScrollViewPager)mView.findViewById(R.id.autoViewPager);
+        AutoScrollAdapter scrollAdapter = new AutoScrollAdapter(getActivity(), imgUrl);
+        mAutoViewPager.setAdapter(scrollAdapter); //Auto Viewpager에 Adapter 장착
+        mAutoViewPager.setInterval(2000); // 페이지 넘어갈 시간 간격 설정
+        mAutoViewPager.startAutoScroll(); //Auto Scroll 시작
+        */
+
 
         mRecyclerView = mView.findViewById(R.id.Home_RecyclerViewItemList);
         adapter = new Home_RecyclerAdapter(mItems); // 어답터에 아이템 연결

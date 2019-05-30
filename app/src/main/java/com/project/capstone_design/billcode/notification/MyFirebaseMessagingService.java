@@ -24,12 +24,12 @@ import androidx.work.WorkManager;
 /**
  * NOTE: There can only be one service in each app that receives FCM messages. If multiple
  * are declared in the Manifest then the first one will be chosen.
- *
+ * <p>
  * In order to make this Java sample functional, you must remove the following from the Kotlin messaging
  * service in the AndroidManifest.xml:
- *
+ * <p>
  * <intent-filter>
- *   <action android:name="com.google.firebase.MESSAGING_EVENT" />
+ * <action android:name="com.google.firebase.MESSAGING_EVENT" />
  * </intent-filter>
  */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -87,12 +87,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         // 이거 추가 하면
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE );
-        PowerManager.WakeLock wakeLock = pm.newWakeLock( PowerManager.SCREEN_BRIGHT_WAKE_LOCK
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK
                 | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
         wakeLock.acquire(3000);
 
-        sendNotification(title,messageBody);
+        sendNotification(title, messageBody);
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -138,7 +138,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     /**
      * Persist token to third-party servers.
-     *
+     * <p>
      * Modify this method to associate the user's FCM InstanceID token with any server-side account
      * maintained by your application.
      *
@@ -153,7 +153,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String title,String messageBody) {
+    private void sendNotification(String title, String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -164,12 +164,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                        .setContentTitle(getString(R.string.fcm_message))
+                        .setContentTitle(title)
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent)
-                        .setLights(getColor(R.color.billcode_main_color),1,1);
+                        .setLights(getColor(R.color.billcode_main_color), 2000, 3000);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

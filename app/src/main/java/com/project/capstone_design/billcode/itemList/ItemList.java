@@ -1,13 +1,20 @@
 package com.project.capstone_design.billcode.itemList;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -58,9 +65,12 @@ public class ItemList extends Fragment {
         List_zero_text = (TextView)mView.findViewById(R.id.list_zero_text);
         List_zero_button= (Button)mView.findViewById(R.id.list_zero_button);
 
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
+                new IntentFilter("delete-message"));
+
         final MainActivity mActivity = new MainActivity();
         mRecyclerView = mView.findViewById(R.id.ItemList_RecyclerViewItemList);
-        adapter = new ItemList_RecyclerAdapter(mItems); // 어답터에 아이템 연결
+        adapter = new ItemList_RecyclerAdapter(mItems, getContext()); // 어답터에 아이템 연결
         // setRecyclerView(); // 리사이클러뷰를 어답터에 연결, 여러가지 기본 세팅해준다.
 
         setRecyclerView();
@@ -85,6 +95,7 @@ public class ItemList extends Fragment {
         });
         */
         //return layout;
+
 
 
         return mView;
@@ -193,7 +204,7 @@ public class ItemList extends Fragment {
                         JsonObject tempObj = (JsonObject) tempJsonArray.get(i);
 
                         String tempStrName = tempObj.get("product_name").toString();
-                        String tempImage = tempObj.get("product_code").toString();
+                        String tempProductCode = tempObj.get("product_code").toString();
                         String tempStrExpDate = tempObj.get("product_expiration_date").toString();
                         int tempPushChecked = tempObj.get("push_alert").getAsInt();
 
@@ -202,7 +213,7 @@ public class ItemList extends Fragment {
                         tempExpDate += tempStrExpDate.substring(6,8);
                         tempExpDate += tempStrExpDate.substring(9,11);
                         //Log.i("MyTag","이미지 넣어지는값 :" +tempImage.substring(1,tempImage.length()-1));
-                        mItems.add(new ItemList_RecyclerItem(tempStrName.substring(1,tempStrName.length()-1),tempImage.substring(1,tempImage.length()-1),tempExpDate,tempPushChecked));
+                        mItems.add(new ItemList_RecyclerItem(tempStrName.substring(1,tempStrName.length()-1),tempProductCode.substring(1,tempProductCode.length()-1),tempExpDate,tempPushChecked));
                     }
 
                     // 데이터 추가가 완료되었으면 notifyDataSetChanged() 메서드를 호출해 데이터 변경 체크를 실행합니다.
@@ -231,4 +242,47 @@ public class ItemList extends Fragment {
         //savedAppData = mAppData.getBoolean("SAVED_APP_DATA", false);
         return mAppData.getString("USER_ID", null);
     }
+
+    public void ItemDelete(String ExpDate, String product_code){
+        String user_id = mAppData.getString("USER_ID", null);
+        Call<JsonObject> mCall = NetworkController.getInstance().getNetworkInterface().DeleteProductInUserList(user_id, ExpDate, product_code);
+        mCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            @EverythingIsNonNull
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                // 메세지가 성공일때(ok_result), 실패일때(no_result) 구분
+                String tempMessage = response.body().get("message").toString();
+                int len_of_message = tempMessage.length(); // 메세지 길이
+                tempMessage = tempMessage.substring(1,len_of_message-1); // 메세지에서 "" 표시 제거
+
+                if(response.isSuccessful() && tempMessage.equals("ok_result")){ // 정상인 경우 메인페이지로
+                    Toast.makeText(getActivity(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
+                }
+                else if(response.isSuccessful() && tempMessage.equals("no_result")){ // 비정상인 경우 알림
+                    Toast.makeText(getActivity(),"삭제중 에러발생",Toast.LENGTH_SHORT).show();
+                }
+                else{ // 아예 서버로부터 값이 없는경우우
+                    int statusCode = response.code();
+                    Toast.makeText(getActivity(),"서버와 통신에 실패하였습니다." +statusCode,Toast.LENGTH_SHORT).show();
+                    Log.i("MyTag","응답코드 :" + statusCode);
+                }
+            }
+
+            @Override
+            @EverythingIsNonNull
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.i("MyTag","서버 onFailure 에러내용 :" + t.getMessage());
+            }
+        });
+    }
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String product_code = intent.getStringExtra("product_code");
+            String expDate = intent.getStringExtra("expDate");
+            ItemDelete(expDate,product_code);
+        }
+    };
 }
